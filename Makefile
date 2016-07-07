@@ -22,6 +22,12 @@ notebooks:
 	@echo "${BLUE}    Done, output is in notebooks-html${NOCOLOR}"
 
 stage:
+ifneq ($(shell git for-each-ref --format='%(upstream:short)' $(shell git symbolic-ref -q HEAD)),origin/staging)
+	@echo "Please check out the staging branch if you want to stage your revisions."
+	@echo "Current branch: $(shell git for-each-ref --format='%(upstream:short)' $(shell git symbolic-ref -q HEAD))"
+	@echo "You might need to bring the staging branch up to date by merging it with the gh-pages branch."
+	exit 1
+endif
 	git pull
 	make notebooks
 	git add -A
